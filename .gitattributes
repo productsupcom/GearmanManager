@@ -1,0 +1,12 @@
+install export-ignore
+pear-workers export-ignore
+pecl-client export-ignore
+pecl-worker-classes export-ignore
+pecl-workers export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+config.ini export-ignore
+config.php export-ignore
+config-advanced.ini export-ignore
+pear-manager.php export-ignore
+pecl-manager.php export-ignore

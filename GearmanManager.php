@@ -932,7 +932,7 @@ abstract class GearmanManager {
 
             case 0:
                 // on the worker reevaluate the config
-                $opts = getopt('c:');
+                $opts = getopt('ac:dD:h:Hl:o:p:P:u:v::w:r:x:Z');
                 $this->parse_config($opts['c']);
 
                 $this->isparent = false;

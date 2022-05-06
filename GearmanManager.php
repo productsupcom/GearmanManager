@@ -931,6 +931,9 @@ abstract class GearmanManager {
         switch($pid) {
 
             case 0:
+                // on the worker reevaluate the config
+                $opts = getopt('c:');
+                $this->parse_config($opts['c']);
 
                 $this->isparent = false;
 

@@ -18,6 +18,9 @@
     "support": {
         "issues": "https://github.com/brianlmoon/GearmanManager/issues"
     },
+    "config": {
+        "lock": false
+    },
     "require": {
         "php": ">=5.3.2"
     },

@@ -98,6 +98,8 @@ dedicated_count - This setting defines the number of processes that should be st
 
 max_worker_lifetime - Set this value to the maximum number of seconds you want a worker to live before it dies. After finishing a job, the worker will check if it has been running past the max life time and if so, it will exit. The manager process will then replace it with a new worker that is registered to do the same jobs that the exiting process was doing. This defaults to 1 hour.
 
+stop_timeout - Number of seconds the manager waits for busy workers to finish their current job after it receives SIGTERM, before it sends them SIGKILL. Set it to 0 to wait until every worker has finished. A killed worker never reports its job, so gearmand gives that job to another worker. Defaults to 60.
+
 auto_update - If set to 1, the manager will fork a helper process that watches the worker directory for changes. If new code is found, a signal is sent to the parent process to kill the worker processes so that the new code can be loaded.
 
 For each registered function, you can also specify some options for only those workers.

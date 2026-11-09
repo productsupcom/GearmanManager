@@ -184,6 +184,12 @@ abstract class GearmanManager {
     protected $worker_restart_splay = 600;
 
     /**
+     * Seconds the parent waits for busy workers after SIGTERM before it
+     * SIGKILLs them. 0 waits until every worker has finished its job.
+     */
+    protected $stop_timeout = 60;
+
+    /**
      * Maximum number of jobs this worker will do before quitting
      */
     protected $max_job_count = 0;
@@ -319,7 +325,7 @@ abstract class GearmanManager {
             }
 
 
-            if($this->stop_work && time() - $this->stop_time > 60){
+            if($this->stop_work && $this->stop_timeout > 0 && time() - $this->stop_time > $this->stop_timeout){
                 $this->log("Children have not exited, killing.", GearmanManager::LOG_LEVEL_PROC_INFO);
                 $this->stop_children(SIGKILL);
             } else {
@@ -373,6 +379,7 @@ abstract class GearmanManager {
      *   <li><b>max_worker_lifetime:</b> Maximum number of seconds for a worker to live.</li>
      *   <li><b>pid_file:</b> File to write process ID to.</li>
      *   <li><b>prefix:</b> Job Class prefix to use.</li>
+     *   <li><b>stop_timeout:</b> Seconds to wait for busy workers on shutdown before killing them; 0 waits indefinitely. Defaults to 60.</li>
      *   <li><b>timeout:</b> Maximum number of seconds germand server should wait for a worker to complete work before timing out and reissuing work to another worker.</li>
      *   <li><b>worker_dir:</b> Directory where workers are located, defaults to ./workers.  If you are using PECL, you can provide multiple directories separated by comma.</li>
      *   <li><b>verbose:</b> Set the log verbosity.  See the LOG_LEVEL_* constants.</li>
@@ -579,6 +586,10 @@ abstract class GearmanManager {
 
         if(isset($this->config['count']) && (int)$this->config['count'] > 0){
             $this->do_all_count = (int)$this->config['count'];
+        }
+
+        if(isset($this->config['stop_timeout']) && (int)$this->config['stop_timeout'] >= 0){
+            $this->stop_timeout = (int)$this->config['stop_timeout'];
         }
 
         if(!empty($this->config['host'])){
